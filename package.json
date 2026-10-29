@@ -1,0 +1,43 @@
+{
+  "name": "llm-pulse",
+  "productName": "LLMPulse",
+  "version": "1.0.0",
+  "description": "A tray-first desktop app for checking whether an LLM model is responding.",
+  "main": "dist-electron/electron/main.js",
+  "author": "LLMPulse",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "concurrently -k -s first \"npm:dev:renderer\" \"npm:dev:electron\"",
+    "dev:renderer": "vite --port 5173 --strictPort",
+    "dev:electron": "wait-on tcp:127.0.0.1:5173 && npm run build:electron && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5173 node scripts/run-electron.cjs .",
+    "build": "npm run typecheck && npm run build:renderer && npm run build:electron",
+    "build:renderer": "vite build",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:providers": "npm run build:electron && node scripts/smoke-provider.cjs",
+    "mock": "node scripts/mock-llm-server.cjs",
+    "start": "npm run build && node scripts/run-electron.cjs .",
+    "dist": "npm run build && electron-builder --win nsis",
+    "dist:dir": "npm run build && electron-builder --win --dir"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "concurrently": "^9.2.0",
+    "cross-env": "^10.0.0",
+    "electron": "^45.1.0",
+    "electron-builder": "^26.0.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5.9.0",
+    "vite": "^8.0.0",
+    "wait-on": "^9.0.0"
+  }
+}

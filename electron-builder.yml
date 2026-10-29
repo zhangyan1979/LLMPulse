@@ -1,0 +1,38 @@
+appId: com.llmpulse.desktop
+productName: LLMPulse
+copyright: Copyright © 2026 LLMPulse
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/renderer/**/*
+  - dist-electron/**/*
+  - package.json
+extraResources:
+  - from: build/icon.png
+    to: icon.png
+  - from: build/tray.ico
+    to: tray.ico
+asar: true
+compression: maximum
+electronDist: node_modules/electron/dist
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
+  artifactName: LLMPulse-Setup-${version}.${ext}
+  requestedExecutionLevel: asInvoker
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: LLMPulse
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  deleteAppDataOnUninstall: false
+  runAfterFinish: true
